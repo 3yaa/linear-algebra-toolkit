@@ -4,8 +4,6 @@ A Python-based application designed to perform a variety of linear algebra opera
 
 ## How to run
 
-To run application, run in your terminal:
-
 ```bash
 ../linear-algebra-toolkit$ ./toolkit
 ```
