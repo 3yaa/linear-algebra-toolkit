@@ -215,7 +215,7 @@ def rank(input_matrix):
     
     return Matrix(rank)
 
-def lu_demonpisition(input_matrix):
+def lu_decomposition(input_matrix):
     low_tri_values = []
     upper = row_echelon(input_matrix, low_tri_values)
     low_tri_values.reverse()
@@ -249,14 +249,43 @@ def solve_problem(input_matrix, b):
 
     return matrix
 
-def eigenvalues(matrix):
-    pass
+def qr_decomposition(matrix):
+    #Perform QR decomposition of a matrix using Gram-Schmidt orthogonal.
+    n = matrix.row
+    Q = [[0] * n for _ in range(n)]
+    R = [[0] * n for _ in range(n)]
 
-def eigenvector():
-    pass
+    for j in range(n):
+        # Compute the orthogonal vector q_j
+        q = [matrix.elements[i][j] for i in range(n)]
+        
+        for i in range(j):
+            r = sum(Q[k][i] * matrix.elements[k][j] for k in range(n))
+            R[i][j] = r
+            q = [q[k] - r * Q[k][i] for k in range(n)]
+        
+        norm = sum(x**2 for x in q) ** 0.5
+        R[j][j] = norm
+        Q = [[q[i] / norm if j == k else Q[i][k] for k in range(n)] for i in range(n)]
+    
+    return Matrix(Q), Matrix(R)
 
-def print_matrix(matrix):
-    for row in matrix:
-        for element in row:
-            print(element, end=' | ') 
-        print()
+def eigenvalues(matrix, num_iterations=1000, tolerance=1e-10):
+    if (matrix.row != matrix.col) and (matrix.row > 1) :
+        return -1
+    
+    n = matrix.row
+    A = matrix
+    
+    for _ in range(num_iterations):
+        Q, R = qr_decomposition(A)
+        A_next = R*Q
+        
+        if all(abs(A_next.elements[i][j]) < tolerance for i in range(n) for j in range(i)):
+            break
+        
+        A = A_next
+    
+    eigenvalues = [A.elements[i][i] for i in range(n)]
+
+    return Matrix(eigenvalues)

@@ -29,7 +29,7 @@ class Matrix:
     def __mul__(self, matrix_b):
         if self.col != matrix_b.row:
             return -1
-        
+
         result = []
         for i in range(self.row):
             row = []
@@ -42,22 +42,23 @@ class Matrix:
 
         return Matrix(result)
 
-    def scalar_subtraction(self, number):
-        for i in range(self.row):
-            for j in range(self.col):
-                self.elements[i][j] += number;
-
     def scalar_addition(self, number):
         for i in range(self.row):
             for j in range(self.col):
-                self.elements[i][j] -= number;
+                self.elements[i][j] += number
+
+    def scalar_subtraction(self, number):
+        for i in range(self.row):
+            for j in range(self.col):
+                self.elements[i][j] -= number
+
 
     def scalar_multiplication(self, number):
         for i in range(self.row):
             for j in range(self.col):
-                self.elements[i][j] *= number;
+                self.elements[i][j] *= number
 
     def scalar_division(self, number):
         for i in range(self.row):
             for j in range(self.col):
-                self.elements[i][j] /= number;
+                self.elements[i][j] /= number
